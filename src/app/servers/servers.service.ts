@@ -1,3 +1,5 @@
+//get this array of servers, get a single server or update,
+// so overwrite it
 export class ServersService {
   private servers = [
     {
