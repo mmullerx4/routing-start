@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { ServersService } from '../servers.service';
+
 
 @Component({
   selector: 'app-server',
@@ -10,10 +12,27 @@ import { ServersService } from '../servers.service';
 export class ServerComponent implements OnInit {
   server: {id: number, name: string, status: string};
 
-  constructor(private serversService: ServersService) { }
+  constructor(private serversService: ServersService,
+    private route: ActivatedRoute,
+    private router: Router ) {
 
+    }
+
+    //get a new server whenever your params should change (with subscribe...)
+    // Be sure to convert strings to numbers using "+"
   ngOnInit() {
-    this.server = this.serversService.getServer(1);
+    const id = +this.route.snapshot.queryParams['id'];
+    this.server = this.serversService.getServer(id);
+    this.route.params
+      .subscribe(
+        (params: Params) => {
+          this.server = this.serversService.getServer(+params['id']);
+        }
+      );
+  }
+// To navigate using a relative route using relativeTo
+  onEdit() {
+    this.router.navigate(['edit'], {relativeTo: this.route, queryParamsHandling: 'preserve'});
   }
 
 }
