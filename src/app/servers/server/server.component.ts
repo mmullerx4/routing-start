@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, Data } from '@angular/router';
 
 import { ServersService } from '../servers.service';
 
@@ -21,14 +21,20 @@ export class ServerComponent implements OnInit {
     //get a new server whenever your params should change (with subscribe...)
     // Be sure to convert strings to numbers using "+"
   ngOnInit() {
-    const id = +this.route.snapshot.queryParams['id'];
-    this.server = this.serversService.getServer(id);
-    this.route.params
-      .subscribe(
-        (params: Params) => {
-          this.server = this.serversService.getServer(+params['id']);
-        }
-      );
+    this.route.data
+    .subscribe(
+      (data: Data) => {
+        this.server = data['server'];
+      }
+    );
+    // const id = +this.route.snapshot.queryParams['id'];
+    // this.server = this.serversService.getServer(id);
+    // this.route.params
+    //   .subscribe(
+    //     (params: Params) => {
+    //       this.server = this.serversService.getServer(+params['id']);
+    //     }
+    //   );
   }
 // To navigate using a relative route using relativeTo
   onEdit() {
